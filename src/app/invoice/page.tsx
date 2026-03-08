@@ -1,8 +1,6 @@
 "use client";
 
 import { useState, useCallback } from "react";
-import jsPDF from "jspdf";
-import autoTable from "jspdf-autotable";
 
 interface Invoice {
   id: number;
@@ -130,53 +128,63 @@ export default function InvoicePage() {
     }
   };
 
-  const handleDownloadPDF = () => {
+  const handleDownloadPDF = async () => {
     if (invoices.length === 0) { alert("No invoices to download."); return; }
-    const doc = new jsPDF();
-    const now = new Date();
+    try {
+      const jsPDFModule = await import("jspdf");
+      const autoTableModule = await import("jspdf-autotable");
+      const jsPDF = jsPDFModule.default;
+      const autoTable = autoTableModule.default;
 
-    doc.setFontSize(22);
-    doc.setTextColor(102, 51, 153);
-    doc.text("Invoice Report", 14, 22);
+      const doc = new jsPDF();
+      const now = new Date();
 
-    doc.setFontSize(10);
-    doc.setTextColor(100, 100, 100);
-    doc.text(
-      "Generated: " + now.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric", hour: "2-digit", minute: "2-digit" }),
-      14, 30
-    );
+      doc.setFontSize(22);
+      doc.setTextColor(102, 51, 153);
+      doc.text("Invoice Report", 14, 22);
 
-    doc.setDrawColor(102, 51, 153);
-    doc.setLineWidth(0.5);
-    doc.line(14, 34, 196, 34);
-
-    const tableData = invoices.map((inv) => [inv.date, inv.paymentMethod, inv.paymentTo, formatINR(inv.amount)]);
-    autoTable(doc, {
-      startY: 40,
-      head: [["Date", "Payment Method", "Payment To", "Amount (INR)"]],
-      body: tableData,
-      foot: [["", "", "Total", formatINR(totalAll)]],
-      headStyles: { fillColor: [102, 51, 153], textColor: 255, fontStyle: "bold" },
-      footStyles: { fillColor: [240, 235, 248], textColor: [50, 50, 50], fontStyle: "bold" },
-      alternateRowStyles: { fillColor: [248, 245, 255] },
-      styles: { fontSize: 10, cellPadding: 4 },
-      columnStyles: { 3: { halign: "right" } },
-    });
-
-    const pageCount = doc.getNumberOfPages();
-    for (let i = 1; i <= pageCount; i++) {
-      doc.setPage(i);
-      doc.setFontSize(8);
-      doc.setTextColor(150, 150, 150);
+      doc.setFontSize(10);
+      doc.setTextColor(100, 100, 100);
       doc.text(
-        "Page " + i + " of " + pageCount,
-        doc.internal.pageSize.getWidth() / 2,
-        doc.internal.pageSize.getHeight() - 10,
-        { align: "center" }
+        "Generated: " + now.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric", hour: "2-digit", minute: "2-digit" }),
+        14, 30
       );
-    }
 
-    doc.save("invoices_" + now.toISOString().split("T")[0] + ".pdf");
+      doc.setDrawColor(102, 51, 153);
+      doc.setLineWidth(0.5);
+      doc.line(14, 34, 196, 34);
+
+      const tableData = invoices.map((inv) => [inv.date, inv.paymentMethod, inv.paymentTo, formatINR(inv.amount)]);
+      autoTable(doc, {
+        startY: 40,
+        head: [["Date", "Payment Method", "Payment To", "Amount (INR)"]],
+        body: tableData,
+        foot: [["", "", "Total", formatINR(totalAll)]],
+        headStyles: { fillColor: [102, 51, 153], textColor: 255, fontStyle: "bold" },
+        footStyles: { fillColor: [240, 235, 248], textColor: [50, 50, 50], fontStyle: "bold" },
+        alternateRowStyles: { fillColor: [248, 245, 255] },
+        styles: { fontSize: 10, cellPadding: 4 },
+        columnStyles: { 3: { halign: "right" } },
+      });
+
+      const pageCount = doc.getNumberOfPages();
+      for (let i = 1; i <= pageCount; i++) {
+        doc.setPage(i);
+        doc.setFontSize(8);
+        doc.setTextColor(150, 150, 150);
+        doc.text(
+          "Page " + i + " of " + pageCount,
+          doc.internal.pageSize.getWidth() / 2,
+          doc.internal.pageSize.getHeight() - 10,
+          { align: "center" }
+        );
+      }
+
+      doc.save("invoices_" + now.toISOString().split("T")[0] + ".pdf");
+    } catch (err) {
+      console.error("PDF generation failed:", err);
+      alert("Failed to generate PDF. Please try again.");
+    }
   };
 
   const methodBadgeClass = (method: string) =>
