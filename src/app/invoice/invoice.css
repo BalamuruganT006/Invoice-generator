@@ -1,0 +1,629 @@
+/* ============================================================
+   INVOICE APP STYLES
+   ============================================================ */
+
+/* Reset & Base */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.app-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #1a0533 0%, #2d1b69 30%, #1e3a8a 70%, #0f172a 100%);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  color: #1e293b;
+}
+
+/* ============================================================
+   HEADER
+   ============================================================ */
+.app-header {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 20px 24px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.header-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.logo {
+  width: 48px;
+  height: 48px;
+  background: linear-gradient(135deg, #a855f7, #6366f1);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 4px 15px rgba(168, 85, 247, 0.4);
+}
+
+.app-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: white;
+  letter-spacing: -0.02em;
+}
+
+.app-subtitle {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.6);
+  margin-top: 2px;
+}
+
+.header-stats {
+  display: flex;
+  gap: 12px;
+}
+
+.stat-card {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  padding: 10px 18px;
+  text-align: center;
+  min-width: 110px;
+}
+
+.stat-label {
+  display: block;
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.6);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 4px;
+}
+
+.stat-value {
+  display: block;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: white;
+}
+
+/* ============================================================
+   MAIN CONTENT
+   ============================================================ */
+.main-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 32px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* ============================================================
+   SECTIONS
+   ============================================================ */
+.form-section,
+.filter-section,
+.table-section {
+  background: white;
+  border-radius: 16px;
+  padding: 28px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.15);
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.section-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+/* ============================================================
+   FORM
+   ============================================================ */
+.invoice-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #475569;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.form-input {
+  padding: 10px 14px;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  color: #1e293b;
+  background: #f8fafc;
+  transition: all 0.2s;
+  outline: none;
+  width: 100%;
+}
+
+.form-input:focus {
+  border-color: #a855f7;
+  background: white;
+  box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.12);
+}
+
+.form-input::placeholder {
+  color: #94a3b8;
+}
+
+.form-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* ============================================================
+   BUTTONS
+   ============================================================ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 10px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.btn:active {
+  transform: scale(0.97);
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #a855f7, #6366f1);
+  color: white;
+  box-shadow: 0 4px 12px rgba(168, 85, 247, 0.35);
+}
+
+.btn-primary:hover {
+  box-shadow: 0 6px 18px rgba(168, 85, 247, 0.5);
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  background: #f1f5f9;
+  color: #475569;
+  border: 1.5px solid #e2e8f0;
+}
+
+.btn-secondary:hover {
+  background: #e2e8f0;
+}
+
+.btn-success {
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: white;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+.btn-success:hover {
+  box-shadow: 0 6px 18px rgba(16, 185, 129, 0.45);
+  transform: translateY(-1px);
+}
+
+.btn-info {
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  color: white;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.btn-info:hover {
+  box-shadow: 0 6px 18px rgba(59, 130, 246, 0.45);
+  transform: translateY(-1px);
+}
+
+.btn-danger {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  color: white;
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+}
+
+.btn-danger:hover {
+  box-shadow: 0 6px 18px rgba(239, 68, 68, 0.45);
+  transform: translateY(-1px);
+}
+
+/* Action buttons in table */
+.btn-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 7px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-edit {
+  background: #ede9fe;
+  color: #7c3aed;
+}
+
+.btn-edit:hover {
+  background: #ddd6fe;
+  transform: translateY(-1px);
+}
+
+.btn-delete {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.btn-delete:hover {
+  background: #fecaca;
+  transform: translateY(-1px);
+}
+
+/* ============================================================
+   FILTER BAR
+   ============================================================ */
+.filter-section {
+  padding: 16px 28px;
+}
+
+.filter-bar {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.search-group {
+  position: relative;
+  flex: 1;
+  min-width: 200px;
+}
+
+.search-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #94a3b8;
+  pointer-events: none;
+}
+
+.search-input {
+  width: 100%;
+  padding: 9px 14px 9px 36px;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  color: #1e293b;
+  background: #f8fafc;
+  outline: none;
+  transition: all 0.2s;
+}
+
+.search-input:focus {
+  border-color: #a855f7;
+  background: white;
+  box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.12);
+}
+
+.filter-select {
+  padding: 9px 14px;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  color: #1e293b;
+  background: #f8fafc;
+  outline: none;
+  cursor: pointer;
+  transition: all 0.2s;
+  min-width: 150px;
+}
+
+.filter-select:focus {
+  border-color: #a855f7;
+  background: white;
+  box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.12);
+}
+
+/* ============================================================
+   TABLE
+   ============================================================ */
+.action-buttons {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+}
+
+.invoice-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.invoice-table thead tr {
+  background: linear-gradient(135deg, #f8f5ff, #f0f4ff);
+}
+
+.invoice-table th {
+  padding: 12px 16px;
+  text-align: left;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #6b21a8;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 2px solid #e9d5ff;
+  white-space: nowrap;
+}
+
+.invoice-table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #f1f5f9;
+  color: #334155;
+  vertical-align: middle;
+}
+
+.invoice-row:hover {
+  background: #faf5ff;
+}
+
+.invoice-row.editing {
+  background: #fef3c7;
+}
+
+.invoice-row:last-child td {
+  border-bottom: none;
+}
+
+.payee-cell {
+  font-weight: 500;
+  color: #1e293b;
+}
+
+.amount-cell {
+  font-weight: 700;
+  color: #059669;
+  font-variant-numeric: tabular-nums;
+}
+
+.actions-cell {
+  display: flex;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+/* Payment method badges */
+.method-badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.method-cash { background: #dcfce7; color: #166534; }
+.method-card { background: #dbeafe; color: #1e40af; }
+.method-bank-transfer { background: #fef3c7; color: #92400e; }
+.method-check { background: #f3e8ff; color: #6b21a8; }
+.method-online { background: #ffe4e6; color: #9f1239; }
+
+/* Empty state */
+.empty-state {
+  text-align: center;
+  padding: 48px 24px !important;
+}
+
+.empty-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  color: #94a3b8;
+}
+
+.empty-content p {
+  font-size: 0.95rem;
+}
+
+/* Total row */
+.total-row {
+  background: linear-gradient(135deg, #f8f5ff, #f0f4ff);
+}
+
+.total-row td {
+  padding: 14px 16px;
+  border-top: 2px solid #e9d5ff;
+  border-bottom: none;
+}
+
+.total-label {
+  font-weight: 700;
+  color: #6b21a8;
+  text-align: right;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.total-amount {
+  font-weight: 800;
+  color: #059669;
+  font-size: 1.05rem;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ============================================================
+   PRINT STYLES
+   ============================================================ */
+@media print {
+  .app-header,
+  .form-section,
+  .filter-section,
+  .action-buttons,
+  .actions-cell,
+  .invoice-table th:last-child,
+  .invoice-table td:last-child {
+    display: none !important;
+  }
+
+  .app-container {
+    background: white !important;
+  }
+
+  .main-content {
+    padding: 0 !important;
+  }
+
+  .table-section {
+    box-shadow: none !important;
+    border: none !important;
+    padding: 0 !important;
+  }
+
+  .invoice-table {
+    font-size: 11pt;
+  }
+
+  .invoice-table th,
+  .invoice-table td {
+    padding: 8px 12px;
+  }
+
+  .method-badge {
+    background: none !important;
+    color: black !important;
+    padding: 0;
+  }
+
+  .amount-cell {
+    color: black !important;
+  }
+
+  .total-amount {
+    color: black !important;
+  }
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 768px) {
+  .app-header {
+    padding: 16px;
+  }
+
+  .header-content {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .header-stats {
+    width: 100%;
+  }
+
+  .stat-card {
+    flex: 1;
+  }
+
+  .main-content {
+    padding: 16px;
+    gap: 16px;
+  }
+
+  .form-section,
+  .filter-section,
+  .table-section {
+    padding: 20px 16px;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .section-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .action-buttons {
+    width: 100%;
+  }
+
+  .action-buttons .btn {
+    flex: 1;
+    justify-content: center;
+  }
+
+  .invoice-table th,
+  .invoice-table td {
+    padding: 10px 12px;
+  }
+
+  .actions-cell {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 480px) {
+  .app-title {
+    font-size: 1.2rem;
+  }
+
+  .btn {
+    padding: 9px 14px;
+    font-size: 0.82rem;
+  }
+}
