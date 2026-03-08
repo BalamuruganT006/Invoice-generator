@@ -47,7 +47,7 @@ export default function InvoicePage() {
                 </div>
                 <div className="stat-card">
                   <span className="stat-label">Total Amount</span>
-                  <span className="stat-value" id="stat-total">$0.00</span>
+                  <span className="stat-value" id="stat-total">₹0.00</span>
                 </div>
               </div>
             </div>
@@ -95,7 +95,7 @@ export default function InvoicePage() {
                     />
                   </div>
                   <div className="form-group">
-                    <label htmlFor="amount" className="form-label">Amount ($)</label>
+                    <label htmlFor="amount" className="form-label">Amount (₹)</label>
                     <input
                       type="number"
                       id="amount"
@@ -204,7 +204,7 @@ export default function InvoicePage() {
                   <tfoot>
                     <tr className="total-row">
                       <td colSpan={3} className="total-label">Total</td>
-                      <td className="total-amount" id="table-total">$0.00</td>
+                      <td className="total-amount" id="table-total">₹0.00</td>
                       <td></td>
                     </tr>
                   </tfoot>
@@ -280,20 +280,22 @@ const PDFGenerator = {
     doc.line(14, 34, 196, 34);
     
     // Table
+    const formatINR = (amount) => '\\u20B9' + parseFloat(amount).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    
     const tableData = invoices.map(inv => [
       inv.date,
       inv.paymentMethod,
       inv.paymentTo,
-      '$' + parseFloat(inv.amount).toFixed(2)
+      formatINR(inv.amount)
     ]);
     
     const total = invoices.reduce((sum, inv) => sum + parseFloat(inv.amount), 0);
     
     doc.autoTable({
       startY: 40,
-      head: [['Date', 'Payment Method', 'Payment To', 'Amount']],
+      head: [['Date', 'Payment Method', 'Payment To', 'Amount (INR)']],
       body: tableData,
-      foot: [['', '', 'Total', '$' + total.toFixed(2)]],
+      foot: [['', '', 'Total', formatINR(total)]],
       headStyles: {
         fillColor: [102, 51, 153],
         textColor: 255,
@@ -510,7 +512,7 @@ const App = {
           <td>\${this.formatDate(inv.date)}</td>
           <td><span class="method-badge method-\${inv.paymentMethod.toLowerCase().replace(' ', '-')}">\${inv.paymentMethod}</span></td>
           <td class="payee-cell">\${this.escapeHtml(inv.paymentTo)}</td>
-          <td class="amount-cell">$\${parseFloat(inv.amount).toFixed(2)}</td>
+          <td class="amount-cell">&#x20B9;\${parseFloat(inv.amount).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
           <td class="actions-cell">
             <button class="btn-action btn-edit" onclick="App.editInvoice(\${inv.id})" title="Edit">
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
@@ -531,14 +533,14 @@ const App = {
     
     // Update table total (filtered)
     const filteredTotal = filtered.reduce((sum, inv) => sum + parseFloat(inv.amount), 0);
-    document.getElementById('table-total').textContent = '$' + filteredTotal.toFixed(2);
+    document.getElementById('table-total').textContent = '\u20B9' + filteredTotal.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   },
   
   updateStats() {
     const count = this.invoices.length;
     const total = this.invoices.reduce((sum, inv) => sum + parseFloat(inv.amount), 0);
     document.getElementById('stat-count').textContent = count;
-    document.getElementById('stat-total').textContent = '$' + total.toFixed(2);
+    document.getElementById('stat-total').textContent = '\u20B9' + total.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   },
   
   formatDate(dateStr) {
