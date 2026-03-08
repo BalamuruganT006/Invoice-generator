@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useCallback } from "react";
-import Script from "next/script";
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
 
 interface Invoice {
   id: number;
@@ -131,47 +132,26 @@ export default function InvoicePage() {
 
   const handleDownloadPDF = () => {
     if (invoices.length === 0) { alert("No invoices to download."); return; }
-    type AnyConstructor = new () => unknown;
-    interface WinWithJsPDF {
-      jspdf?: { jsPDF?: AnyConstructor };
-      jsPDF?: AnyConstructor;
-    }
-    const win = window as unknown as WinWithJsPDF;
-    const jsPDFLib = (win.jspdf && win.jspdf.jsPDF) || win.jsPDF;
-    if (!jsPDFLib) {
-      alert("PDF library not loaded. Please wait a moment and try again.");
-      return;
-    }
-    const doc = new jsPDFLib() as Record<string, unknown> & {
-      setFontSize: (s: number) => void;
-      setTextColor: (...args: number[]) => void;
-      text: (t: string, x: number, y: number, opts?: Record<string, unknown>) => void;
-      setDrawColor: (...args: number[]) => void;
-      setLineWidth: (w: number) => void;
-      line: (x1: number, y1: number, x2: number, y2: number) => void;
-      autoTable: (opts: Record<string, unknown>) => void;
-      setPage: (n: number) => void;
-      save: (name: string) => void;
-      internal: {
-        getNumberOfPages: () => number;
-        pageSize: { getWidth: () => number; getHeight: () => number };
-      };
-    };
+    const doc = new jsPDF();
+    const now = new Date();
+
     doc.setFontSize(22);
     doc.setTextColor(102, 51, 153);
     doc.text("Invoice Report", 14, 22);
+
     doc.setFontSize(10);
     doc.setTextColor(100, 100, 100);
-    const now = new Date();
     doc.text(
       "Generated: " + now.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric", hour: "2-digit", minute: "2-digit" }),
       14, 30
     );
+
     doc.setDrawColor(102, 51, 153);
     doc.setLineWidth(0.5);
     doc.line(14, 34, 196, 34);
+
     const tableData = invoices.map((inv) => [inv.date, inv.paymentMethod, inv.paymentTo, formatINR(inv.amount)]);
-    doc.autoTable({
+    autoTable(doc, {
       startY: 40,
       head: [["Date", "Payment Method", "Payment To", "Amount (INR)"]],
       body: tableData,
@@ -182,13 +162,20 @@ export default function InvoicePage() {
       styles: { fontSize: 10, cellPadding: 4 },
       columnStyles: { 3: { halign: "right" } },
     });
-    const pageCount = doc.internal.getNumberOfPages();
+
+    const pageCount = doc.getNumberOfPages();
     for (let i = 1; i <= pageCount; i++) {
       doc.setPage(i);
       doc.setFontSize(8);
       doc.setTextColor(150, 150, 150);
-      doc.text("Page " + i + " of " + pageCount, doc.internal.pageSize.getWidth() / 2, doc.internal.pageSize.getHeight() - 10, { align: "center" });
+      doc.text(
+        "Page " + i + " of " + pageCount,
+        doc.internal.pageSize.getWidth() / 2,
+        doc.internal.pageSize.getHeight() - 10,
+        { align: "center" }
+      );
     }
+
     doc.save("invoices_" + now.toISOString().split("T")[0] + ".pdf");
   };
 
@@ -197,9 +184,6 @@ export default function InvoicePage() {
 
   return (
     <>
-      <Script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" strategy="lazyOnload" />
-      <Script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js" strategy="lazyOnload" />
-
       <div id="app-root">
         <div className="app-container">
           {/* Header */}

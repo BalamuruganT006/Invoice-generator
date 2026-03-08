@@ -87,3 +87,4 @@ export async function GET() {
 |------|---------|
 | Initial | Template created with base setup |
 | 2026-03-08 | Fixed invoice page: rewrote from inline `<script dangerouslySetInnerHTML>` (which Next.js doesn't execute) to proper React component with `useState` for all state management and localStorage persistence |
+| 2026-03-08 | Fixed PDF download: replaced CDN-loaded jsPDF (unreliable with lazyOnload) with npm packages `jspdf` v4 + `jspdf-autotable` v5, using proper ES module imports |
