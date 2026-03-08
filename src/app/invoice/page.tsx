@@ -17,11 +17,11 @@ export default function InvoicePage() {
     <>
       <Script
         src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"
-        strategy="beforeInteractive"
+        strategy="lazyOnload"
       />
       <Script
         src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"
-        strategy="beforeInteractive"
+        strategy="lazyOnload"
       />
       <div id="app-root">
         <div className="app-container">
@@ -252,13 +252,13 @@ const Storage = {
 // ============================================================
 const PDFGenerator = {
   generatePDF(invoices) {
-    if (typeof window.jspdf === 'undefined' && typeof window.jsPDF === 'undefined') {
-      alert('PDF library not loaded. Please refresh the page and try again.');
+    const jsPDFLib = (window.jspdf && window.jspdf.jsPDF) || window.jsPDF;
+    if (typeof jsPDFLib === 'undefined') {
+      alert('PDF library not loaded. Please wait a moment and try again.');
       return;
     }
     
-    const { jsPDF } = window.jspdf || window;
-    const doc = new jsPDF();
+    const doc = new jsPDFLib();
     
     // Title
     doc.setFontSize(22);
@@ -280,7 +280,7 @@ const PDFGenerator = {
     doc.line(14, 34, 196, 34);
     
     // Table
-    const formatINR = (amount) => '\\u20B9' + parseFloat(amount).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    const formatINR = (amount) => '\u20B9' + parseFloat(amount).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     
     const tableData = invoices.map(inv => [
       inv.date,
