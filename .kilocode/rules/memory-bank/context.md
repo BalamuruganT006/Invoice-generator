@@ -86,3 +86,4 @@ export async function GET() {
 | Date | Changes |
 |------|---------|
 | Initial | Template created with base setup |
+| 2026-03-08 | Fixed invoice page: rewrote from inline `<script dangerouslySetInnerHTML>` (which Next.js doesn't execute) to proper React component with `useState` for all state management and localStorage persistence |
